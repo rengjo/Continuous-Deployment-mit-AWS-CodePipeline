@@ -1,0 +1,66 @@
+{
+    "pipeline": {
+        "name": "pipeam1402",
+        "roleArn": "arn:aws:iam::137237580984:role/service-role/AWSCodePipelineServiceRole-eu-central-1-pipeam1402",
+        "artifactStore": {
+            "type": "S3",
+            "location": "bucketam1402"
+        },
+        "stages": [
+            {
+                "name": "Source",
+                "actions": [
+                    {
+                        "name": "SourceAction",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "ThirdParty",
+                            "provider": "GitHub",
+                            "version": "1"
+                        },
+                        "configuration": {
+                            "Owner": "rengjo",
+                            "Repo": "Continuous-Deployment-mit-AWS-CodePipeline",
+                            "Branch": "main",
+                            "OAuthToken": "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"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "MyApp"
+                            }
+                        ],
+                        "runOrder": 1
+                    }
+                ]
+            },
+            {
+                "name": "Build",
+                "actions": [
+                    {
+                        "name": "BuildAction",
+                        "actionTypeId": {
+                            "category": "Build",
+                            "owner": "AWS",
+                            "provider": "CodeBuild",
+                            "version": "1"
+                        },
+                        "configuration": {
+                            "ProjectName": "MyCodeBuildProject"
+                        },
+                        "inputArtifacts": [
+                            {
+                                "name": "MyApp"
+                            }
+                        ],
+                        "outputArtifacts": [
+                            {
+                                "name": "MyBuildOutput"
+                            }
+                        ],
+                        "runOrder": 1
+                    }
+                ]
+            }
+        ]
+    }
+}
